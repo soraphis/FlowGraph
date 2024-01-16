@@ -400,6 +400,7 @@ public:
 	virtual bool GetStatusBackgroundColor(FLinearColor& OutColor) const;
 
 	virtual FString GetAssetPath();
+	/* Double-Clicking the Node in the graph will open this asset */
 	virtual UObject* GetAssetToEdit();
 	virtual AActor* GetActorToFocus();
 #endif
