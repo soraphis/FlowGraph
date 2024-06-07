@@ -61,16 +61,21 @@ void UFlowComponent::RegisterWithFlowSubsystem()
 
 		FlowSubsystem->RegisterComponent(this);
 
-		if (RootFlow)
+		BeginRootFlow(bComponentLoadedFromSaveGame);
+	}
+}
+
+void UFlowComponent::BeginRootFlow(bool bComponentLoadedFromSaveGame)
+{
+	if (RootFlow)
+	{
+		if (bComponentLoadedFromSaveGame)
 		{
-			if (bComponentLoadedFromSaveGame)
-			{
-				LoadRootFlow();
-			}
-			else if (bAutoStartRootFlow)
-			{
-				StartRootFlow();
-			}
+			LoadRootFlow();
+		}
+		else if (bAutoStartRootFlow)
+		{
+			StartRootFlow();
 		}
 	}
 }
