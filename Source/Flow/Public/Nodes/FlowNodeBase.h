@@ -28,11 +28,11 @@ typedef TFunction<void(UFlowNodeAddOn&)> FFlowNodeAddOnFunction;
 /**
  * The base class for UFlowNode and UFlowNodeAddOn, with their shared functionality
  */
-UCLASS(Abstract, HideCategories = Object)
+UCLASS(Abstract, BlueprintType, HideCategories = Object)
 class FLOW_API UFlowNodeBase
 	: public UObject
-	  , public IFlowCoreExecutableInterface
-	  , public IFlowContextPinSupplierInterface
+	, public IFlowCoreExecutableInterface
+	, public IFlowContextPinSupplierInterface
 {
 	GENERATED_UCLASS_BODY()
 
@@ -62,6 +62,27 @@ public:
 	virtual void ForceFinishNode() override;
 	virtual void Cleanup() override;
 	// --
+
+	// Finish execution of node, it will call Cleanup
+	UFUNCTION(BlueprintCallable, Category = "FlowNode")
+	virtual void Finish() PURE_VIRTUAL(Finish)
+
+	// Simply trigger the first Output Pin, convenient to use if node has only one output
+	UFUNCTION(BlueprintCallable, Category = "FlowNode")
+	virtual void TriggerFirstOutput(const bool bFinish) PURE_VIRTUAL(TriggerFirstOutput)
+
+	// Cause a specific output to be triggered (by PinName)
+	UFUNCTION(BlueprintCallable, Category = "FlowNode", meta = (HidePin = "ActivationType"))
+	virtual void TriggerOutput(const FName PinName, const bool bFinish = false, const EFlowPinActivationType ActivationType = EFlowPinActivationType::Default) PURE_VIRTUAL(TriggerOutput)
+
+	// TriggerOutput convenience aliases
+	void TriggerOutput(const FString& PinName, const bool bFinish = false);
+	void TriggerOutput(const FText& PinName, const bool bFinish = false);
+	void TriggerOutput(const TCHAR* PinName, const bool bFinish = false);
+
+	// Cause a specific output to be triggered (by PinHandle)
+	UFUNCTION(BlueprintCallable, Category = "FlowNode", meta = (HidePin = "ActivationType"))
+	virtual void TriggerOutputPin(const FFlowOutputPinHandle Pin, const bool bFinish = false, const EFlowPinActivationType ActivationType = EFlowPinActivationType::Default);
 
 //////////////////////////////////////////////////////////////////////////
 // Pins	
@@ -253,20 +274,20 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "FlowNode", meta = (DevelopmentOnly))
 	void LogError(FString Message, const EFlowOnScreenMessageType OnScreenMessageType = EFlowOnScreenMessageType::Permanent);
 
-	// LogError from constant function (allowing this to be modified only to log the error itself)
-	FORCEINLINE void LogErrorConst(FString Message, const EFlowOnScreenMessageType OnScreenMessageType = EFlowOnScreenMessageType::Permanent) const;
+	// LogError from constant function (allowing 'this' to be modified only to log the error itself)
+	void LogErrorConst(FString Message, const EFlowOnScreenMessageType OnScreenMessageType = EFlowOnScreenMessageType::Permanent) const;
 
 	UFUNCTION(BlueprintCallable, Category = "FlowNode", meta = (DevelopmentOnly))
 	void LogWarning(FString Message);
 
-	// LogWarning from constant function (allowing this to be modified only to log the warning itself)
-	FORCEINLINE void LogWarningConst(FString Message) const;
+	// LogWarning from constant function (allowing 'this' to be modified only to log the warning itself)
+	void LogWarningConst(FString Message) const;
 
 	UFUNCTION(BlueprintCallable, Category = "FlowNode", meta = (DevelopmentOnly))
 	void LogNote(FString Message);
 
-	// LogNote from constant function (allowing this to be modified only to log the note itself)
-	FORCEINLINE void LogNoteConst(FString Message) const;
+	// LogNote from constant function (allowing 'this' to be modified only to log the note itself)
+	void LogNoteConst(FString Message) const;
 
 #if !UE_BUILD_SHIPPING
 protected:
