@@ -390,7 +390,7 @@ EFlowAddOnAcceptResult UFlowNodeBase::CheckAcceptFlowNodeAddOnChild(const UFlowN
 		AddOnTemplate->IsA<UFlowNode>())
 	{
 		const FString Message = FString::Printf(TEXT("%s::AcceptFlowNodeAddOnParent must always Reject for UFlowNode subclasses"), *GetClass()->GetName());
-		GetFlowAsset()->GetTemplateAsset()->LogError(Message, const_cast<UFlowNodeBase*>(this));
+		GetFlowAsset()->GetTemplateAsset()->LogError(Message, this);
 
 		return EFlowAddOnAcceptResult::Reject;
 	}
@@ -594,7 +594,7 @@ FString UFlowNodeBase::GetNodeDescription() const
 }
 #endif // WITH_EDITOR
 
-void UFlowNodeBase::LogError(FString Message, const EFlowOnScreenMessageType OnScreenMessageType)
+void UFlowNodeBase::LogError(FString Message, const EFlowOnScreenMessageType OnScreenMessageType) const
 {
 #if !UE_BUILD_SHIPPING
 	if (BuildMessage(Message))
@@ -632,12 +632,7 @@ void UFlowNodeBase::LogError(FString Message, const EFlowOnScreenMessageType OnS
 #endif
 }
 
-void UFlowNodeBase::LogErrorConst(FString Message, const EFlowOnScreenMessageType OnScreenMessageType) const
-{
-	const_cast<UFlowNodeBase*>(this)->LogError(Message, OnScreenMessageType);
-}
-
-void UFlowNodeBase::LogWarning(FString Message)
+void UFlowNodeBase::LogWarning(FString Message) const
 {
 #if !UE_BUILD_SHIPPING
 	if (BuildMessage(Message))
@@ -653,12 +648,7 @@ void UFlowNodeBase::LogWarning(FString Message)
 #endif
 }
 
-void UFlowNodeBase::LogWarningConst(FString Message) const
-{
-	const_cast<UFlowNodeBase*>(this)->LogWarning(Message);
-}
-
-void UFlowNodeBase::LogNote(FString Message)
+void UFlowNodeBase::LogNote(FString Message) const
 {
 #if !UE_BUILD_SHIPPING
 	if (BuildMessage(Message))
@@ -672,11 +662,6 @@ void UFlowNodeBase::LogNote(FString Message)
 #endif
 	}
 #endif
-}
-
-void UFlowNodeBase::LogNoteConst(FString Message) const
-{
-	const_cast<UFlowNodeBase*>(this)->LogNote(Message);
 }
 
 #if !UE_BUILD_SHIPPING

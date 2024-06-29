@@ -272,22 +272,13 @@ protected:
 	FString K2_GetNodeDescription() const;
 
 	UFUNCTION(BlueprintCallable, Category = "FlowNode", meta = (DevelopmentOnly))
-	void LogError(FString Message, const EFlowOnScreenMessageType OnScreenMessageType = EFlowOnScreenMessageType::Permanent);
-
-	// LogError from constant function (allowing 'this' to be modified only to log the error itself)
-	void LogErrorConst(FString Message, const EFlowOnScreenMessageType OnScreenMessageType = EFlowOnScreenMessageType::Permanent) const;
+	void LogError(FString Message, const EFlowOnScreenMessageType OnScreenMessageType = EFlowOnScreenMessageType::Permanent) const;
 
 	UFUNCTION(BlueprintCallable, Category = "FlowNode", meta = (DevelopmentOnly))
-	void LogWarning(FString Message);
-
-	// LogWarning from constant function (allowing 'this' to be modified only to log the warning itself)
-	void LogWarningConst(FString Message) const;
+	void LogWarning(FString Message) const;
 
 	UFUNCTION(BlueprintCallable, Category = "FlowNode", meta = (DevelopmentOnly))
-	void LogNote(FString Message);
-
-	// LogNote from constant function (allowing 'this' to be modified only to log the note itself)
-	void LogNoteConst(FString Message) const;
+	void LogNote(FString Message) const;
 
 #if !UE_BUILD_SHIPPING
 protected:
