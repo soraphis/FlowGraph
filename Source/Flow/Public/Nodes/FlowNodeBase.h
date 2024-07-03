@@ -181,6 +181,9 @@ public:
 	
 #if WITH_EDITORONLY_DATA
 protected:
+	UPROPERTY(EditDefaultsOnly, Category = "FlowNode")
+	uint8 bDisplayNodeTitleWithoutPrefix : 1;
+	
 	uint8 bCanDelete : 1 ;
 	uint8 bCanDuplicate : 1;
 	
@@ -244,6 +247,7 @@ public:
 	virtual FText GetNodeTitle() const;
 	virtual FText GetNodeToolTip() const;
 	virtual FText GetNodeConfigText() const;
+	FText GetGeneratedDisplayName() const;
 #endif
 
 protected:	

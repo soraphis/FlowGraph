@@ -630,7 +630,7 @@ FText UFlowGraphNode::GetTooltipText() const
 	FText Tooltip;
 	if (NodeInstance)
 	{
-		Tooltip = NodeInstance->GetClass()->GetToolTipText();
+		Tooltip = NodeInstance->GetNodeToolTip();
 	}
 	if (Tooltip.IsEmpty())
 	{
